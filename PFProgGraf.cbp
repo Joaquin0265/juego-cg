@@ -42,7 +42,61 @@
 			<Add library="gdi32" />
 			<Add directory="C:/Program Files/CodeBlocks/MinGW/x86_64-w64-mingw32/lib" />
 		</Linker>
-		<Unit filename="main.cpp" />
+		
+		<Unit filename="/src/main.cpp" />
+
+		<!-- Módulo CORE -->
+		<Unit filename="src/core/Config_ResolucionYTeclas.h" />
+		<Unit filename="src/core/LecturaDeTeclado_P1_P2.cpp" />
+		<Unit filename="src/core/LecturaDeTeclado_P1_P2.h" />
+		<Unit filename="src/core/MotorPrincipal_BucleJuego.cpp" />
+		<Unit filename="src/core/MotorPrincipal_BucleJuego.h" />
+		<Unit filename="src/core/VectoresYMatematicas2D.h" />
+
+		<!-- Módulo ENTITIES -->
+		<Unit filename="src/entities/AtributosPersonaje_VidaPosicionEstado.cpp" />
+		<Unit filename="src/entities/AtributosPersonaje_VidaPosicionEstado.h" />
+		<Unit filename="src/entities/CajasDeGolpeYDanio_Hitbox.cpp" />
+		<Unit filename="src/entities/CajasDeGolpeYDanio_Hitbox.h" />
+		<Unit filename="src/entities/LimitesDelEscenarioPlataforma.cpp" />
+		<Unit filename="src/entities/LimitesDelEscenarioPlataforma.h" />
+
+		<!-- Módulo GRAPHICS -->
+		<Unit filename="src/graphics/DibujoDePersonaje1_CuerpoYArticulaciones.cpp" />
+		<Unit filename="src/graphics/DibujoDePersonaje1_CuerpoYArticulaciones.h" />
+		<Unit filename="src/graphics/DibujoDePersonaje2_CuerpoYArticulaciones.cpp" />
+		<Unit filename="src/graphics/DibujoDePersonaje2_CuerpoYArticulaciones.h" />
+		<Unit filename="src/graphics/DibujoFondoEscenario_MontaniasEdificios.cpp" />
+		<Unit filename="src/graphics/DibujoFondoEscenario_MontaniasEdificios.h" />
+		<Unit filename="src/graphics/FuncionesParaDibujarFigurasBasicas.cpp" />
+		<Unit filename="src/graphics/FuncionesParaDibujarFigurasBasicas.h" />
+		<Unit filename="src/graphics/Interfaz_BarrasDeVidaYReloj.cpp" />
+		<Unit filename="src/graphics/Interfaz_BarrasDeVidaYReloj.h" />
+
+		<!-- Módulo STATES -->
+		<Unit filename="src/states/AdministradorDePantallasYModos.cpp" />
+		<Unit filename="src/states/AdministradorDePantallasYModos.h" />
+		<Unit filename="src/states/InterfazEstadoBase.h" />
+		<Unit filename="src/states/Pantalla_MenuPrincipal.cpp" />
+		<Unit filename="src/states/Pantalla_MenuPrincipal.h" />
+		<Unit filename="src/states/Pantalla_PeleaActiva.cpp" />
+		<Unit filename="src/states/Pantalla_PeleaActiva.h" />
+		<Unit filename="src/states/Pantalla_SeleccionDePersonajeYMapa.cpp" />
+		<Unit filename="src/states/Pantalla_SeleccionDePersonajeYMapa.h" />
+		<Unit filename="src/states/Pantalla_VictoriaYFinDeJuego.cpp" />
+		<Unit filename="src/states/Pantalla_VictoriaYFinDeJuego.h" />
+
+
+
+		<!-- Ejemplo para los archivos nuevos de las carpetas 
+		<Unit filename="src/core/Constants.h" />
+		<Unit filename="src/entities/Fighter.h" />
+		<Unit filename="src/graphics/CharacterMesh.h" />
+		<Unit filename="src/states/GameState.h" /> 
+		El comodin no funciona asique no intentes algo como <Unit filename="src/states/*.h" /> :"v 
+		-->
+
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
+
