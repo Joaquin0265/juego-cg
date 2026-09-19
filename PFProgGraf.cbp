@@ -33,6 +33,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add directory="C:/Program Files/CodeBlocks/MinGW/x86_64-w64-mingw32/include" />
+			<!-- ESTA LÍNEA ES LA QUE RESUELVE EL ERROR DE "No such file or directory" -->
+			<Add directory="src" />
 		</Compiler>
 		<Linker>
 			<Add library="freeglut" />
@@ -42,8 +44,8 @@
 			<Add library="gdi32" />
 			<Add directory="C:/Program Files/CodeBlocks/MinGW/x86_64-w64-mingw32/lib" />
 		</Linker>
-		
-		<Unit filename="/src/main.cpp" />
+
+		<Unit filename="src/main.cpp" />
 
 		<!-- Módulo CORE -->
 		<Unit filename="src/core/Config_ResolucionYTeclas.h" />
@@ -86,17 +88,6 @@
 		<Unit filename="src/states/Pantalla_VictoriaYFinDeJuego.cpp" />
 		<Unit filename="src/states/Pantalla_VictoriaYFinDeJuego.h" />
 
-
-
-		<!-- Ejemplo para los archivos nuevos de las carpetas 
-		<Unit filename="src/core/Constants.h" />
-		<Unit filename="src/entities/Fighter.h" />
-		<Unit filename="src/graphics/CharacterMesh.h" />
-		<Unit filename="src/states/GameState.h" /> 
-		El comodin no funciona asique no intentes algo como <Unit filename="src/states/*.h" /> :"v 
-		-->
-
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
-
