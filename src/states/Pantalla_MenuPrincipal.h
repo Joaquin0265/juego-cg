@@ -3,8 +3,8 @@
 
 class Pantalla_MenuPrincipal {
 private:
-    int opcionSeleccionada; // 0 = 1v1 Local, 1 = Salir
-    const int TOTAL_OPCIONES = 2;
+    int opcionSeleccionada; // 0 = 1v1 Local, 1 = Configuración, 2 = Salir
+    const int TOTAL_OPCIONES = 3; // <-- Cambiado de 2 a 3
 
     void dibujarTexto(const char* texto, float x, float y, void* fuente, float r, float g, float b);
 

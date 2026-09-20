@@ -20,18 +20,19 @@ void teclaEspecialPresionada(int tecla, int x, int y) {
     }
 }
 
+
 void teclaNormalPresionada(unsigned char tecla, int x, int y) {
     if (estadoActualJuego == 0) { // Si estamos en el Menú
-        if (tecla == 13) { // Tecla ENTER
-            int opcion = menuPrincipal.getOpcionSeleccionada();
-            if (opcion == 0) {
-                // Entrar a la pelea
-                estadoActualJuego = 1;
-            } else if (opcion == 1) {
-                // Salir del juego
-                exit(0);
-            }
-        }
+        if (tecla == 13) { // ENTER
+    int opcion = menuPrincipal.getOpcionSeleccionada();
+    if (opcion == 0) {
+        estadoActualJuego = 1; // Entrar a la pelea
+    } else if (opcion == 1) {
+        estadoActualJuego = 2; // Ir a Pantalla de Configuración / Opciones
+    } else if (opcion == 2) {
+        exit(0); // Salir del juego
+    }
+}
     } else if (estadoActualJuego == 1) { // Si estamos en Pelea
         if (tecla == 27) { // Tecla ESCAPE
             // Volver al menú
