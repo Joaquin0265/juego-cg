@@ -1,42 +1,108 @@
 #include "core/LecturaDeTeclado_P1_P2.h"
-#include "states/Pantalla_MenuPrincipal.h"
-#include <GL/freeglut.h>
-#include <cstdlib> // Para exit(0)
+#include <cstring>
+#include <cctype>
 
-// Referencia global al menú para controlar la navegación
-extern Pantalla_MenuPrincipal menuPrincipal;
-extern int estadoActualJuego; // 0 = Menú, 1 = Pelea
+// Estados booleanos de cada tecla (256 normales ASCII, 256 especiales GLUT)
+static bool teclasNormalesActivas[256];
+static bool teclasNormalesPrevias[256];
 
-void teclaEspecialPresionada(int tecla, int x, int y) {
-    if (estadoActualJuego == 0) { // Si estamos en el Menú
-        switch (tecla) {
-            case GLUT_KEY_UP:
-                menuPrincipal.moverSeleccion(-1);
-                break;
-            case GLUT_KEY_DOWN:
-                menuPrincipal.moverSeleccion(1);
-                break;
-        }
-    }
+static bool teclasEspecialesActivas[256];
+static bool teclasEspecialesPrevias[256];
+
+static InfoUltimaTecla ultimaTeclaRegistrada = {false, 0, false};
+
+void inicializarTeclado() {
+    std::memset(teclasNormalesActivas, 0, sizeof(teclasNormalesActivas));
+    std::memset(teclasNormalesPrevias, 0, sizeof(teclasNormalesPrevias));
+    std::memset(teclasEspecialesActivas, 0, sizeof(teclasEspecialesActivas));
+    std::memset(teclasEspecialesPrevias, 0, sizeof(teclasEspecialesPrevias));
+    ultimaTeclaRegistrada.huboPulsacion = false;
 }
-
 
 void teclaNormalPresionada(unsigned char tecla, int x, int y) {
-    if (estadoActualJuego == 0) { // Si estamos en el Menú
-        if (tecla == 13) { // ENTER
-    int opcion = menuPrincipal.getOpcionSeleccionada();
-    if (opcion == 0) {
-        estadoActualJuego = 1; // Entrar a la pelea
-    } else if (opcion == 1) {
-        estadoActualJuego = 2; // Ir a Pantalla de Configuración / Opciones
-    } else if (opcion == 2) {
-        exit(0); // Salir del juego
+    // Normalizar a minusculas para evitar conflictos de Bloq Mayus en letras
+    unsigned char t = tecla;
+    if (t >= 'A' && t <= 'Z') {
+        t = std::tolower(t);
+    }
+    teclasNormalesActivas[t] = true;
+
+    ultimaTeclaRegistrada.huboPulsacion = true;
+    ultimaTeclaRegistrada.codigo = t;
+    ultimaTeclaRegistrada.esEspecial = false;
+}
+
+void teclaNormalSoltada(unsigned char tecla, int x, int y) {
+    unsigned char t = tecla;
+    if (t >= 'A' && t <= 'Z') {
+        t = std::tolower(t);
+    }
+    teclasNormalesActivas[t] = false;
+}
+
+void teclaEspecialPresionada(int tecla, int x, int y) {
+    if (tecla >= 0 && tecla < 256) {
+        teclasEspecialesActivas[tecla] = true;
+
+        ultimaTeclaRegistrada.huboPulsacion = true;
+        ultimaTeclaRegistrada.codigo = tecla;
+        ultimaTeclaRegistrada.esEspecial = true;
     }
 }
-    } else if (estadoActualJuego == 1) { // Si estamos en Pelea
-        if (tecla == 27) { // Tecla ESCAPE
-            // Volver al menú
-            estadoActualJuego = 0;
+
+void teclaEspecialSoltada(int tecla, int x, int y) {
+    if (tecla >= 0 && tecla < 256) {
+        teclasEspecialesActivas[tecla] = false;
+    }
+}
+
+void actualizarTecladoFinDeFrame() {
+    std::memcpy(teclasNormalesPrevias, teclasNormalesActivas, sizeof(teclasNormalesActivas));
+    std::memcpy(teclasEspecialesPrevias, teclasEspecialesActivas, sizeof(teclasEspecialesActivas));
+}
+
+bool estaAccionActiva(int jugador, AccionJuego accion) {
+    if (accion < 0 || accion >= TOTAL_ACCIONES) return false;
+
+    const ControlesJugador& ctrl = (jugador == 1) ? configGlobal.p1 : configGlobal.p2;
+    int codigo = ctrl.teclas[accion];
+    bool esEsp = ctrl.esTeclaEspecial[accion];
+
+    if (esEsp) {
+        if (codigo >= 0 && codigo < 256) {
+            return teclasEspecialesActivas[codigo];
+        }
+    } else {
+        if (codigo >= 0 && codigo < 256) {
+            return teclasNormalesActivas[codigo];
         }
     }
+    return false;
+}
+
+bool fueAccionPresionada(int jugador, AccionJuego accion) {
+    if (accion < 0 || accion >= TOTAL_ACCIONES) return false;
+
+    const ControlesJugador& ctrl = (jugador == 1) ? configGlobal.p1 : configGlobal.p2;
+    int codigo = ctrl.teclas[accion];
+    bool esEsp = ctrl.esTeclaEspecial[accion];
+
+    if (esEsp) {
+        if (codigo >= 0 && codigo < 256) {
+            return (teclasEspecialesActivas[codigo] && !teclasEspecialesPrevias[codigo]);
+        }
+    } else {
+        if (codigo >= 0 && codigo < 256) {
+            return (teclasNormalesActivas[codigo] && !teclasNormalesPrevias[codigo]);
+        }
+    }
+    return false;
+}
+
+InfoUltimaTecla obtenerUltimaTeclaPresionada() {
+    return ultimaTeclaRegistrada;
+}
+
+void limpiarUltimaTeclaPresionada() {
+    ultimaTeclaRegistrada.huboPulsacion = false;
 }

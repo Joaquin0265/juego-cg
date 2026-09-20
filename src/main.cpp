@@ -1,50 +1,36 @@
+/**
+ * ============================================================================
+ * PROYECTO FINAL: JUEGO DE PELEAS 2D (COMPUTACION GRAFICA)
+ * ============================================================================
+ * Desarrollado en C++ con OpenGL clasico y GLUT / FreeGLUT para Code::Blocks.
+ *
+ * Caracteristicas academicas y tecnicas:
+ * 1. Graficos 100% Vectoriales y Procedurales (GL_QUADS, GL_TRIANGLES, GL_LINES).
+ * 2. Plantilla de Jugador (AtributosPersonaje_VidaPosicionEstado) reutilizable.
+ * 3. Mecanica de Esquive/Parry: Pose de espera con contraataque inmediato si
+ *    el rival ataca, o castigo de inmovilidad si falla.
+ *    - Leonardox: Postura de esquive alzando un brazo en alto.
+ *    - Guadalupe: Postura de esquive tocandose la mejilla/cara.
+ * 4. Bloqueo con medidor de escudo y aturdimiento (Guard Break / Stun).
+ * 5. FÃ­sicas completas de salto, gravedad, agacharse y colisiones AABB.
+ * 6. Dos escenarios (Parque y Universidad) con ruptura y cambio por golpe fuerte.
+ * 7. Menu interactivo con reasignacion de teclas para P1 y P2 guardado en config.txt.
+ * ============================================================================
+ */
+
 #if defined(_WIN32)
 #include <windows.h>
 #endif
 
-#include <GL/freeglut.h>
-#include "core/Config_ResolucionYTeclas.h"
-#include "core/LecturaDeTeclado_P1_P2.h"
-#include "states/Pantalla_MenuPrincipal.h"
-
-// Variables globales del estado del juego
-Pantalla_MenuPrincipal menuPrincipal;
-int estadoActualJuego = 0; // 0 = Menú, 1 = Pelea
-
-void buclePrincipal(int valor) {
-    glutPostRedisplay();
-    glutTimerFunc(1000 / FPS, buclePrincipal, 0);
-}
-
-void renderizar() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-
-    if (estadoActualJuego == 0) {
-        menuPrincipal.renderizar();
-    } else if (estadoActualJuego == 1) {
-        // Renderizar pantalla de pelea
-    }
-
-    glutSwapBuffers();
-}
+#include "core/MotorPrincipal_BucleJuego.h"
 
 int main(int argc, char** argv) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(ANCHO_PANTALLA, ALTO_PANTALLA);
-    glutInitWindowPosition(100, 100);
-    glutCreateWindow("Proyecto Final - Juego de Pelea");
+    // Obtener la instancia singleton del motor e inicializar
+    MotorJuego& motor = MotorJuego::obtenerInstancia();
+    motor.inicializar(argc, argv);
 
-    // Configuración inicial de controles
-    cargarControlesPorDefecto();
+    // Iniciar el bucle de eventos de GLUT
+    motor.ejecutar();
 
-    // Registro de callbacks
-    glutDisplayFunc(renderizar);
-    glutKeyboardFunc(teclaNormalPresionada);
-    glutSpecialFunc(teclaEspecialPresionada);
-    glutTimerFunc(1000 / FPS, buclePrincipal, 0);
-
-    glutMainLoop();
     return 0;
 }
